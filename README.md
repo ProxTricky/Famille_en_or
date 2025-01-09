@@ -24,7 +24,7 @@ Une adaptation web du célèbre jeu télévisé "Une Famille en Or". Ce jeu perm
 
 1. Clonez le dépôt :
 ```bash
-git clone [URL_DU_REPO]
+git clone https://github.com/ProxTricky/Famille_en_or.git
 cd famille-en-or
 ```
 

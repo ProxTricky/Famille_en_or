@@ -68,30 +68,56 @@ L'application sera accessible à l'adresse `http://localhost:5000`
 
 ### Format CSV
 
-Créez un fichier CSV avec la structure suivante :
+Le format CSV permet d'importer plusieurs questions à la fois. Chaque question suit le format suivant :
 ```csv
-Question
+Question 1
 Réponse 1,6
 Réponse 2,5
 Réponse 3,4
 Réponse 4,3
 Réponse 5,2
 Réponse 6,1
+
+Question 2
+Réponse 1,6
+Réponse 2,5
+Réponse 3,4
+Réponse 4,3
+Réponse 5,2
+Réponse 6,1
+
+Question 3
+...
 ```
 
-- La première ligne contient la question
-- Chaque ligne suivante contient une réponse et son nombre de points, séparés par une virgule
-- Maximum 6 réponses par question
-- Les points sont automatiquement attribués de manière décroissante (6 à 1)
+- Une ligne vide sépare chaque question
+- Pour chaque question :
+  - La première ligne contient la question
+  - Les lignes suivantes contiennent les réponses et leurs points, séparés par une virgule
+  - Maximum 6 réponses par question
+  - Les points sont automatiquement attribués de manière décroissante (6 à 1)
+
+⚠️ **Important** : L'import de nouvelles questions remplace complètement les questions existantes. Les questions précédentes seront supprimées.
 
 ### Format JSON
 
-Créez un fichier JSON avec la structure suivante :
+Le format JSON permet également d'importer plusieurs questions à la fois :
 ```json
 {
   "questions": [
     {
-      "question": "Votre question ici",
+      "question": "Question 1",
+      "answers": [
+        {"text": "Réponse 1", "points": 6},
+        {"text": "Réponse 2", "points": 5},
+        {"text": "Réponse 3", "points": 4},
+        {"text": "Réponse 4", "points": 3},
+        {"text": "Réponse 5", "points": 2},
+        {"text": "Réponse 6", "points": 1}
+      ]
+    },
+    {
+      "question": "Question 2",
       "answers": [
         {"text": "Réponse 1", "points": 6},
         {"text": "Réponse 2", "points": 5},
@@ -105,11 +131,21 @@ Créez un fichier JSON avec la structure suivante :
 }
 ```
 
+⚠️ **Important** : Comme pour le format CSV, l'import de nouvelles questions remplace toutes les questions existantes.
+
 ### Import des Questions
 
 1. Sur la page d'accueil, cliquez sur "Importer des Questions"
 2. Sélectionnez votre fichier CSV ou JSON
-3. Les questions seront automatiquement chargées dans le jeu
+3. Les questions seront automatiquement chargées dans le jeu, remplaçant toutes les questions précédentes
+4. Un message de confirmation apparaîtra pour indiquer le succès de l'import
+
+### Questions par Défaut
+
+Le jeu est livré avec un ensemble de questions par défaut dans le fichier `example_questions.csv`. Ces questions seront :
+- Chargées au premier lancement du jeu
+- Remplacées lors de l'import de nouvelles questions
+- Restaurées si vous supprimez toutes les questions importées
 
 ## 📁 Structure des Fichiers
 

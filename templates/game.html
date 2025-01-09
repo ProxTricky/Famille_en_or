@@ -6,6 +6,25 @@
     <title>Famille en Or - Jeu</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #game-board {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
         .team-scores {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -44,16 +63,8 @@
     </style>
 </head>
 <body>
-    <div class="container game-container">
+    <div class="game-wrapper">
         <h1>Famille en Or</h1>
-        <div class="team-scores">
-            {% for i in range(1, 5) %}
-            <div class="team-score team{{ i }}">
-                <h3>{{ team_names['team' ~ i] }}</h3>
-                <p><span id="team{{ i }}-score">0</span></p>
-            </div>
-            {% endfor %}
-        </div>
         <div id="game-board">
             <div id="question-display">
                 <h2>Question: <span id="current-question"></span></h2>
@@ -94,11 +105,15 @@
                     </div>
                 </div>
             </div>
-            <div class="controls">
-                <button id="next-question" class="button">Question suivante</button>
+            <div class="team-scores">
+                {% for i in range(1, 5) %}
+                <div class="team-score team{{ i }}">
+                    <h3>{{ team_names['team' ~ i] }}</h3>
+                    <p id="team{{ i }}-score">0</p>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        <a href="{{ url_for('index') }}" class="button">Retour au menu</a>
     </div>
     <script>
         const questions = {{ questions|tojson|safe }};

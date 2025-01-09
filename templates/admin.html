@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famille en Or - Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+    <div class="container admin-container">
+        <h1>Interface Présentateur</h1>
+        <div id="admin-game-board">
+            <div class="admin-scores">
+                {% for i in range(1, 5) %}
+                <div class="admin-team-score team{{ i }}">
+                    <h3>{{ team_names['team' ~ i] }}</h3>
+                    <p>Score: <span id="admin-team{{ i }}-score">0</span></p>
+                </div>
+                {% endfor %}
+            </div>
+            <div id="admin-question-display">
+                <h2>Question: <span id="admin-current-question"></span></h2>
+                <div id="admin-answers-list" class="admin-answers-grid"></div>
+            </div>
+            <div class="admin-controls">
+                <div class="file-import">
+                    <input type="file" id="questionFile" accept=".json,.csv" style="display: none;">
+                    <button onclick="document.getElementById('questionFile').click()" class="button">Importer des Questions</button>
+                </div>
+                <button id="admin-next-question" class="button">Question suivante</button>
+                <button id="admin-reset-question" class="button">Réinitialiser la question</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const questions = {{ questions|tojson|safe }};
+        const teamNames = {{ team_names|tojson|safe }};
+        const gameWindow = window.open('{{ url_for("game") }}', 'gameWindow', 'width=1200,height=800');
+    </script>
+    <script src="{{ url_for('static', filename='admin.js') }}"></script>
+</body>
+</html>

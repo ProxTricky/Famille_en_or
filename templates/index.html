@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famille en Or</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .main-menu {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-setup {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .team-input-group {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .team-input-group:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .team-input-group.team1 { border-color: var(--team1); }
+        .team-input-group.team2 { border-color: var(--team2); }
+        .team-input-group.team3 { border-color: var(--team3); }
+        .team-input-group.team4 { border-color: var(--team4); }
+
+        .team-input {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem 0;
+            color: var(--text);
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .team-input:focus {
+            outline: none;
+            border-bottom-color: var(--primary);
+        }
+
+        .menu-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .menu-button {
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .start-button {
+            background: var(--primary);
+            color: var(--background);
+        }
+
+        .import-button {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .menu-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .team-setup {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-menu">
+            <h1>Famille en Or</h1>
+            <form id="setupForm">
+                <div class="team-setup">
+                    {% for i in range(1, 5) %}
+                    <div class="team-input-group team{{ i }}">
+                        <input type="text" 
+                               name="team{{ i }}" 
+                               class="team-input" 
+                               placeholder="Nom de l'équipe {{ i }}"
+                               value="{{ team_names['team' ~ i] if team_names else '' }}" 
+                               required>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="menu-buttons">
+                    <button type="submit" class="menu-button start-button">Commencer le Jeu</button>
+                    <button type="button" class="menu-button import-button" onclick="document.getElementById('questionFile').click()">Importer des Questions</button>
+                </div>
+            </form>
+            <input type="file" id="questionFile" accept=".json,.csv" style="display: none;">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('setupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/setup', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = '/admin';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur est survenue lors de la configuration des équipes');
+            }
+        });
+
+        document.getElementById('questionFile').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/import', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('Questions importées avec succès');
+                    e.target.value = ''; // Reset file input
+                } else {
+                    alert(`Erreur: ${data.error}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur est survenue lors de l\'import');
+            }
+        });
+    </script>
+</body>
+</html>

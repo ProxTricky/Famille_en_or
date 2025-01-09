@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration - Famille en Or</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .setup-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .team-setup {
+            margin: 20px 0;
+        }
+
+        .team-input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 2px solid #FFD700;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.1em;
+        }
+
+        .team-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .team-input:focus {
+            outline: none;
+            border-color: #FFA500;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .setup-button {
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="setup-container">
+            <h1>Configuration des Équipes</h1>
+            <form id="setupForm">
+                <div class="team-setup">
+                    <input type="text" name="team1" class="team-input" placeholder="Nom de l'équipe 1" required>
+                </div>
+                <div class="team-setup">
+                    <input type="text" name="team2" class="team-input" placeholder="Nom de l'équipe 2" required>
+                </div>
+                <div class="team-setup">
+                    <input type="text" name="team3" class="team-input" placeholder="Nom de l'équipe 3" required>
+                </div>
+                <div class="team-setup">
+                    <input type="text" name="team4" class="team-input" placeholder="Nom de l'équipe 4" required>
+                </div>
+                <button type="submit" class="button setup-button">Commencer le Jeu</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('setupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/setup', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    window.location.href = '/admin';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Une erreur est survenue lors de la configuration des équipes');
+            }
+        });
+    </script>
+</body>
+</html>

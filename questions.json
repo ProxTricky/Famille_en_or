@@ -1,0 +1,37 @@
+{
+  "questions": [
+    {
+      "question": "Citez quelque chose qu'on trouve toujours dans un frigo",
+      "answers": [
+        {"text": "Lait", "points": 6},
+        {"text": "Œufs", "points": 5},
+        {"text": "Beurre", "points": 4},
+        {"text": "Fromage", "points": 3},
+        {"text": "Yaourt", "points": 2},
+        {"text": "Légumes", "points": 1}
+      ]
+    },
+    {
+      "question": "Citez un super-héros",
+      "answers": [
+        {"text": "Spider-Man", "points": 6},
+        {"text": "Batman", "points": 5},
+        {"text": "Superman", "points": 4},
+        {"text": "Iron Man", "points": 3},
+        {"text": "Captain America", "points": 2},
+        {"text": "Wonder Woman", "points": 1}
+      ]
+    },
+    {
+      "question": "Que fait-on quand on s'ennuie ?",
+      "answers": [
+        {"text": "Dormir", "points": 6},
+        {"text": "Regarder la TV", "points": 5},
+        {"text": "Jouer aux jeux vidéo", "points": 4},
+        {"text": "Téléphone", "points": 3},
+        {"text": "Lire", "points": 2},
+        {"text": "Manger", "points": 1}
+      ]
+    }
+  ]
+}
